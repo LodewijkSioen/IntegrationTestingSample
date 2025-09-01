@@ -1,0 +1,6 @@
+﻿{
+  id: Guid_1,
+  name: Portable Hole,
+  description: Some description of the product,
+  price: 42
+}
