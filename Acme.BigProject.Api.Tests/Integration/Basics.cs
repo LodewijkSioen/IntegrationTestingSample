@@ -32,10 +32,13 @@ public class Basics
     {
         var result = await SystemUnderTest.Host.Scenario(s =>
         {
-            s.Post.Json(new
-            {
-                name = "New Name"
-            }).ToUrl("/users/me");
+            s.Post
+                .Text("Echo!")
+                .ToUrl("/echo");
+            s.StatusCodeShouldBe(202);
         });
+
+        var response = await result.ReadAsTextAsync();
+        Assert.That(response, Is.EqualTo("Echo! Echo!"));
     }
 }

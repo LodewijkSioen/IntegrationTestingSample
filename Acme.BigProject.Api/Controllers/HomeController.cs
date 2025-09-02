@@ -20,6 +20,14 @@ public class HomeController(
         return Ok("Hello World");
     }
 
+    [HttpPost("/echo")]
+    [AllowAnonymous]
+    public ActionResult Post_Users_Me()
+    {
+        var content = new StreamReader(Request.Body).ReadToEnd();
+        return Accepted("/echo", $"{content} {content}");
+    }
+
     [HttpGet("users/me")]
     public ActionResult Get_Users_Me()
     {
@@ -27,12 +35,6 @@ public class HomeController(
         return nameClaim != null
             ? Ok(nameClaim.Value)
             : throw new NullReferenceException("Name Claim should not be null");
-    }
-
-    [HttpPost("/users/me")]
-    public ActionResult Post_Users_Me()
-    {
-
     }
 
     [HttpGet("products/{productName}")]
