@@ -22,7 +22,7 @@ public class HomeController(
 
     [HttpPost("/echo")]
     [AllowAnonymous]
-    public ActionResult Post_Users_Me()
+    public ActionResult Post_Echo()
     {
         var content = new StreamReader(Request.Body).ReadToEnd();
         return Accepted("/echo", $"{content} {content}");
@@ -35,6 +35,22 @@ public class HomeController(
         return nameClaim != null
             ? Ok(nameClaim.Value)
             : throw new NullReferenceException("Name Claim should not be null");
+    }
+
+    [HttpGet("users/me/email")]
+    public ActionResult Get_Users_Me_Email()
+    {
+        var emailClaim = HttpContext.User.FindFirst(c => c.Type == JwtRegisteredClaimNames.Email);
+        return emailClaim != null
+            ? Ok(emailClaim.Value)
+            : throw new NullReferenceException("Email Claim should not be null");
+    }
+
+    [HttpGet("users")]
+    [Authorize("Admin-Only")]
+    public ActionResult Get_Users_List()
+    {
+        return Ok("all the users");
     }
 
     [HttpGet("products/{productName}")]

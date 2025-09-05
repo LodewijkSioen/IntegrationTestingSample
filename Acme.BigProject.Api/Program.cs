@@ -17,14 +17,19 @@ builder.Services.AddDbContext<AcmeDbContext>(opts =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
     {
+        opts.MapInboundClaims = false;
         opts.TokenValidationParameters = new()
         {
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateIssuerSigningKey = false,
+            RoleClaimType = "role"
         };
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(cnf =>
+{
+    cnf.AddPolicy("admin-only", b => b.RequireRole("admin"));
+});
 
 builder.Services.AddControllers();
 

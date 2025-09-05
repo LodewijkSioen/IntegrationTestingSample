@@ -1,4 +1,5 @@
-﻿using Acme.BigProject.Api.Domain;
+﻿using System.Security.Cryptography.Xml;
+using Acme.BigProject.Api.Domain;
 using Acme.BigProject.Api.Models;
 using Acme.BigProject.Api.Tests.Builders;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ public class Database : DatabaseFixture
     public async Task Product_Exist()
     {
         Guid id;
+        string urlName;
         await using (var scope = SystemUnderTest.Host.Services.CreateAsyncScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<AcmeDbContext>();
@@ -32,11 +34,12 @@ public class Database : DatabaseFixture
             });
             await dbContext.SaveChangesAsync();
             id = entry.Entity.Id;
+            urlName = entry.Entity.UrlName;
         }
 
         var response = await SystemUnderTest.Host.Scenario(s =>
         {
-            s.Get.Url("/products/portable-hole");
+            s.Get.Url($"/products/{urlName}");
             s.StatusCodeShouldBe(200);
         });
         var product = await response.ReadAsJsonAsync<ProductModel>();
@@ -50,7 +53,7 @@ public class Database : DatabaseFixture
     [Test]
     public async Task Product_Exist_Better()
     {
-        var id = await UsingDatabase(async db =>
+        var (id, urlName) = await UsingDatabase(async db =>
         {
             var entry = await db.Products.AddAsync(new("Portable Hole")
             {
@@ -58,13 +61,12 @@ public class Database : DatabaseFixture
                 Price = 42,
                 Tags = ["decoy", "physics"]
             });
-            await db.SaveChangesAsync();
-            return entry.Entity.Id;
+            return (entry.Entity.Id, entry.Entity.UrlName);
         });
 
         var response = await SystemUnderTest.Host.Scenario(s =>
         {
-            s.Get.Url("/products/portable-hole");
+            s.Get.Url($"/products/{urlName}");
             s.StatusCodeShouldBe(200);
         });
 
@@ -79,15 +81,15 @@ public class Database : DatabaseFixture
     [Test]
     public async Task Product_Exist_Best()
     {
-        var id = await UsingDatabase(async db =>
+        var (id, urlName) = await UsingDatabase(async db =>
         {
             var product = await new ProductBuilder("Portable Hole").Persist(db);
-            return product.Id;
+            return (product.Id, product.UrlName);
         });
 
         var response = await SystemUnderTest.Host.Scenario(s =>
         {
-            s.Get.Url("/products/portable-hole");
+            s.Get.Url($"/products/{urlName}");
             s.StatusCodeShouldBe(200);
         });
 
@@ -100,14 +102,17 @@ public class Database : DatabaseFixture
     }
 
     [Test]
-    public async Task Product_Exist_Galaxy()
+    public async Task Product_Exist_Betterest()
     {
-        _ = UsingDatabase(db => 
-            new ProductBuilder("Portable Hole").Persist(db));
+        var urlName = await UsingDatabase(async db =>
+        {
+            var product = await new ProductBuilder("Portable Hole").Persist(db);
+            return product.UrlName;
+        });
 
         var response = await SystemUnderTest.Host.Scenario(s =>
         {
-            s.Get.Url("/products/portable-hole");
+            s.Get.Url($"/products/{urlName}");
             s.StatusCodeShouldBe(200);
         });
 
