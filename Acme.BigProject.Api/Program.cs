@@ -17,12 +17,11 @@ builder.Services.AddDbContext<AcmeDbContext>(opts =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
     {
+        opts.Authority = "https://example.org";
+        opts.Audience = "https://example.org";
         opts.MapInboundClaims = false;
         opts.TokenValidationParameters = new()
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateIssuerSigningKey = false,
             RoleClaimType = "role"
         };
     });
