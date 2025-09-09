@@ -102,10 +102,10 @@ public class Database : DatabaseFixture
     [Test]
     public async Task Product_Exist_Betterest()
     {
-        var urlName = await UsingDatabase(async db =>
+        var (id, urlName) = await UsingDatabase(async db =>
         {
             var product = await new ProductBuilder("Portable Hole").Persist(db);
-            return product.UrlName;
+            return (product.Id, product.UrlName);
         });
 
         var response = await SystemUnderTest.Host.Scenario(s =>
@@ -114,6 +114,7 @@ public class Database : DatabaseFixture
             s.StatusCodeShouldBe(200);
         });
 
-        await VerifyJson(response.ReadAsTextAsync());
+        await VerifyJson(response.ReadAsTextAsync())
+            .AddNamedGuid(id, "productId");
     }
 }

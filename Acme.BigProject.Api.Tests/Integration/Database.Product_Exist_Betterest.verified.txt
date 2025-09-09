@@ -1,5 +1,5 @@
 ﻿{
-  id: Guid_1,
+  id: productId,
   name: Portable Hole,
   description: Some description of the product,
   price: 42,
