@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.Xml;
-using Acme.BigProject.Api.Domain;
+﻿using Acme.BigProject.Api.Domain;
 using Acme.BigProject.Api.Models;
 using Acme.BigProject.Api.Tests.Builders;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,7 +91,6 @@ public class Database : DatabaseFixture
             s.Get.Url($"/products/{urlName}");
             s.StatusCodeShouldBe(200);
         });
-
         var product = await response.ReadAsJsonAsync<ProductModel>();
 
         Assert.That(product.Id, Is.EqualTo(id));
