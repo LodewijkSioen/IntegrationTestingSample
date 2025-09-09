@@ -111,9 +111,9 @@ public class SystemUnderTest
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         // Just for the flow of the demo
         if(_seed != null)
-    {
-        await _seed.ResetAsync(ConnectionString);
-    }
+        {
+            await _seed.ResetAsync(ConnectionString);
+        }
     }
 
     private const string ConnectionString = "Server=.;Database=acme-bigproject;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;";

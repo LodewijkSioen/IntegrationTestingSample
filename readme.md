@@ -1,6 +1,8 @@
 # Integration testing demo
 This repo contains a demonstration on how to do integration testing in dotnet
-using my favorite tools and techniques.
+using my favorite tools and techniques.  
+
+You can read a full walktrough of the demo [here](walktrough.md).
 
 ## Tools
 - [Alba](https://jasperfx.github.io/alba/): in-memory host for asp.net
