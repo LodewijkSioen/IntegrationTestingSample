@@ -2,5 +2,9 @@
   id: Guid_1,
   name: Portable Hole,
   description: Some description of the product,
-  price: 42
+  price: 42,
+  tags: [
+    tag 1,
+    tag 2
+  ]
 }

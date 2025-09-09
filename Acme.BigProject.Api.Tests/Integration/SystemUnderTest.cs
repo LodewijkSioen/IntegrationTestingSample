@@ -34,7 +34,7 @@ public class SystemUnderTest
 
     #region Authenticated_Host
 
-    async Task<IAlbaHost> WithAuthentication()
+    async Task<IAlbaHost> WithAuthenticationStub()
     {
         var jwtStub = new JwtSecurityStub()
             .With(JwtRegisteredClaimNames.Name, "Willy E Coyote");
@@ -45,7 +45,7 @@ public class SystemUnderTest
 
     #region Dependencies_Host
 
-    async Task<IAlbaHost> WithDependencies()
+    async Task<IAlbaHost> WithMockedDependencies()
     {
         var jwtStub = new JwtSecurityStub()
             .With(JwtRegisteredClaimNames.Name, "Willy E Coyote");
@@ -108,7 +108,12 @@ public class SystemUnderTest
 
     public static async Task Reset()
     {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        // Just for the flow of the demo
+        if(_seed != null)
+    {
         await _seed.ResetAsync(ConnectionString);
+    }
     }
 
     private const string ConnectionString = "Server=.;Database=acme-bigproject;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;";
