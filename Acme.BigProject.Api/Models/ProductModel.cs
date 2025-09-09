@@ -14,12 +14,12 @@ public class ProductModel
         Name = product.Name;
         Description = product.Description;
         Price = product.Price;
-        //Tags = product.Tags;
+        Tags = product.Tags;
     }
 
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; } 
     public int Price { get; set; }
-    //public string[] Tags { get; set; }
+    public string[] Tags { get; set; }
 }

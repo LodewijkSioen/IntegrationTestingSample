@@ -20,7 +20,7 @@ public class Dependencies : DependencyFixture
 
         #region Assert
 
-        SpySendGridService.Mock.Verify(m => m.SendNewsletterConfirmation("test@example.org"));
+        MockSendGridService.Mock.Verify(m => m.SendNewsletterConfirmation("test@example.org"));
 
         #endregion
     }

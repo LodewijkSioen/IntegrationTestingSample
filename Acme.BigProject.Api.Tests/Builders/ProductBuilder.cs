@@ -2,7 +2,7 @@
 
 namespace Acme.BigProject.Api.Tests.Builders;
 
-public record ProductBuilder(string? Name)
+public record ProductBuilder(string? Name = null, string[]? Tags = null)
 {
     public async Task<Product> Persist(AcmeDbContext dbContext)
     {
@@ -10,7 +10,7 @@ public record ProductBuilder(string? Name)
         {
             Description = "Some description of the product",
             Price = 42,
-            Tags = ["tag 1", "tag 2"]
+            Tags = Tags ?? ["tag 1", "tag 2"]
         };
         var entry = await dbContext.Products.AddAsync(product);
 

@@ -3,7 +3,7 @@ using Moq;
 
 namespace Acme.BigProject.Api.Tests.Mocks;
 
-public class SpySendGridService : ISendGridService
+public class MockSendGridService : ISendGridService
 {
     public static readonly Mock<ISendGridService> Mock = new();
 

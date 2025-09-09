@@ -53,7 +53,7 @@ public class SystemUnderTest
         {
             builder.ConfigureServices(services =>
             {
-                services.Replace(new(typeof(ISendGridService), typeof(SpySendGridService), ServiceLifetime.Transient));
+                services.Replace(new(typeof(ISendGridService), typeof(MockSendGridService), ServiceLifetime.Transient));
             });
         }, jwtStub);
     }
@@ -70,7 +70,7 @@ public class SystemUnderTest
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.Replace(new(typeof(ISendGridService), typeof(SpySendGridService),
+                    services.Replace(new(typeof(ISendGridService), typeof(MockSendGridService),
                         ServiceLifetime.Transient));
                 });
             },
@@ -124,7 +124,7 @@ public abstract class DependencyFixture
     [TearDown]
     public void Teardown()
     {
-        SpySendGridService.Mock.Reset();
+        MockSendGridService.Mock.Reset();
     }
 }
 
