@@ -1,0 +1,26 @@
+resources:
+  repositories:
+  - repository: self
+  containers:
+  - container: mssql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports: 
+      - 1433:1433
+    env:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: yourStrong(!)Password
+
+stages:
+- stage: Build
+  dependsOn: []
+  jobs:
+  - job: Build
+    services:
+      mssql: mssql
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Test'
+      inputs:
+        command: test
+        projects: Acme.BigProject.sln
+        arguments: '--configuration Release'
